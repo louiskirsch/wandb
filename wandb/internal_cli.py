@@ -10,6 +10,7 @@ import sys
 import time
 import traceback
 import platform
+import signal
 
 import six
 import wandb
@@ -91,6 +92,9 @@ def agent_run(args):
 
 def main():
     wandb.try_to_set_up_global_logging()
+
+    # Ignore SIGINT to prevent crashing from slurm signals
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
 
     args = json.loads(sys.argv[1])
     command = args['command']
